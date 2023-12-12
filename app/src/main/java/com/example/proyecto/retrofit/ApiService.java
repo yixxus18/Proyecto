@@ -1,9 +1,11 @@
 package com.example.proyecto.retrofit;
 
+import com.example.proyecto.model.ControlData;
 import com.example.proyecto.model.Data;
 import com.example.proyecto.response.LoginResponse;
 import com.example.proyecto.model.ApiResponse;
 import com.example.proyecto.model.UserLogin;
+import com.example.proyecto.response.MyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,5 +23,7 @@ public interface ApiService {
     @GET("api/consumir")
     Call<ApiResponse> getFeedData();
 
+    @POST("/enviar") // Ruta para controlar las luces
+    Call<MyResponse> controlLuces(@Body ControlData controlData);
 
 }

@@ -8,6 +8,7 @@ import com.example.proyecto.R;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -47,6 +48,20 @@ public class MainActivity5 extends AppCompatActivity {
 
         feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         observeFeedData();
+
+        Switch switchControl = findViewById(R.id.switchControl);
+        feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+
+        feedViewModel.getSwitchState().observe(this, switchOn -> {
+            switchControl.setChecked(switchOn);
+            if (switchOn) {
+                feedViewModel.sendDataToServer(3950);
+            }
+        });
+
+        switchControl.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            feedViewModel.setSwitchState(isChecked);
+        });
     }
 
     private void observeFeedData() {

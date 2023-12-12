@@ -1,14 +1,19 @@
 package com.example.proyecto.view_model;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.proyecto.model.ApiResponse;
+import com.example.proyecto.model.ControlData;
 import com.example.proyecto.model.Feed;
+import com.example.proyecto.response.MyResponse;
 import com.example.proyecto.retrofit.ApiService;
 import com.example.proyecto.retrofit.RetrofitRequest;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +29,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.proyecto.model.ApiResponse;
 import com.example.proyecto.model.Feed;
 import com.example.proyecto.retrofit.ApiService;
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +38,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class FeedViewModel extends ViewModel {
 
@@ -74,10 +82,9 @@ public class FeedViewModel extends ViewModel {
             }
         };
 
-        // Ejecutar la solicitud cada 10 segundos
         if (timer == null) {
             timer = new Timer();
-            timer.schedule(timerTask, 0, 10000); // 10 segundos (10000 milisegundos)
+            timer.schedule(timerTask, 0, 10000);
         }
     }
 
@@ -88,6 +95,49 @@ public class FeedViewModel extends ViewModel {
         if (timer != null) {
             timer.cancel();
             timer = null;
+        }
+    }
+
+    private MutableLiveData<Boolean> switchState = new MutableLiveData<>();
+
+    public LiveData<Boolean> getSwitchState() {
+        return switchState;
+    }
+
+    public void setSwitchState(boolean state) {
+        switchState.postValue(state);
+    }
+
+    public void sendDataToServer(int value) {
+        if (value > 0) {
+            Retrofit retrofit = RetrofitRequest.getRetrofitInstance();
+            ApiService apiService = retrofit.create(ApiService.class);
+            ControlData controlData = new ControlData(value);
+
+            Call<MyResponse> call = apiService.controlLuces(controlData);
+            call.enqueue(new Callback<MyResponse>() {
+                @Override
+                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                    if (response.isSuccessful()) {
+                        MyResponse myResponse = response.body();
+                        Log.d("APIResponse", "Success: " + myResponse.getMessage());
+                    } else {
+                        try {
+                            Gson gson = new Gson();
+                            String errorBody = response.errorBody().string();
+                            Log.e("APIResponse", "Error: " + errorBody);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MyResponse> call, Throwable t) {
+                    Log.e("APIResponse", "Request failed: " + t.getMessage());
+                }
+            });
+
         }
     }
 }
