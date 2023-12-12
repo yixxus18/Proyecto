@@ -50,18 +50,16 @@ public class MainActivity5 extends AppCompatActivity {
         observeFeedData();
 
         Switch switchControl = findViewById(R.id.switchControl);
-        feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
 
         feedViewModel.getSwitchState().observe(this, switchOn -> {
             switchControl.setChecked(switchOn);
-            if (switchOn) {
-                feedViewModel.sendDataToServer(3950);
-            }
+            feedViewModel.sendDataToServer(switchOn);
         });
 
         switchControl.setOnCheckedChangeListener((buttonView, isChecked) -> {
             feedViewModel.setSwitchState(isChecked);
         });
+
     }
 
     private void observeFeedData() {

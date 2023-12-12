@@ -84,7 +84,7 @@ public class FeedViewModel extends ViewModel {
 
         if (timer == null) {
             timer = new Timer();
-            timer.schedule(timerTask, 0, 10000);
+            timer.schedule(timerTask, 0, 9000);
         }
     }
 
@@ -108,38 +108,61 @@ public class FeedViewModel extends ViewModel {
         switchState.postValue(state);
     }
 
-    public void sendDataToServer(int value) {
-        if (value > 0) {
-            Retrofit retrofit = RetrofitRequest.getRetrofitInstance();
-            ApiService apiService = retrofit.create(ApiService.class);
-            ControlData controlData = new ControlData(value);
-
-            Call<MyResponse> call = apiService.controlLuces(controlData);
-            call.enqueue(new Callback<MyResponse>() {
+    public void sendDataToServer(boolean switchOn) {
+        if (switchOn) {
+            TimerTask timerTask = new TimerTask() {
                 @Override
-                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                    if (response.isSuccessful()) {
-                        MyResponse myResponse = response.body();
-                        Log.d("APIResponse", "Success: " + myResponse.getMessage());
-                    } else {
-                        try {
-                            Gson gson = new Gson();
-                            String errorBody = response.errorBody().string();
-                            Log.e("APIResponse", "Error: " + errorBody);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                public void run() {
+                    sendDataToServer(3950);
                 }
+            };
 
-                @Override
-                public void onFailure(Call<MyResponse> call, Throwable t) {
-                    Log.e("APIResponse", "Request failed: " + t.getMessage());
-                }
-            });
-
+            if (timer == null) {
+                timer = new Timer();
+                timer.schedule(timerTask, 0, 9000);
+            }
+        } else {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
         }
     }
+
+    private void sendDataToServer(int value) {
+
+
+        Retrofit retrofit = RetrofitRequest.getRetrofitInstance();
+        ApiService apiService = retrofit.create(ApiService.class);
+        ControlData controlData = new ControlData(value);
+
+        Call<MyResponse> call = apiService.controlLuces(controlData);
+        call.enqueue(new Callback<MyResponse>() {
+            @Override
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                if (response.isSuccessful()) {
+                    MyResponse myResponse = response.body();
+                    Log.d("APIResponse", "Success: " + myResponse.getMessage());
+                } else {
+                    // Manejar error
+                    try {
+                        Gson gson = new Gson();
+                        String errorBody = response.errorBody().string();
+                        Log.e("APIResponse", "Error: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse> call, Throwable t) {
+                // Manejar fallos
+                Log.e("APIResponse", "Request failed: " + t.getMessage());
+            }
+        });
+    }
+
 }
 
 

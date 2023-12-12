@@ -23,7 +23,7 @@ public interface ApiService {
     @GET("api/consumir")
     Call<ApiResponse> getFeedData();
 
-    @POST("/enviar") // Ruta para controlar las luces
+    @POST("api/enviar") // Ruta para controlar las luces
     Call<MyResponse> controlLuces(@Body ControlData controlData);
 
 }
