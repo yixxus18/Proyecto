@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.proyecto.model.LoginResponse;
+import com.example.proyecto.response.LoginResponse;
 import com.example.proyecto.model.UserLogin;
 import com.example.proyecto.retrofit.ApiService;
 import com.example.proyecto.retrofit.RetrofitRequest;

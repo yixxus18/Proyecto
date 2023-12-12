@@ -1,4 +1,4 @@
-package com.example.proyecto.model;
+package com.example.proyecto.response;
 
 // Modelo para la respuesta del inicio de sesión
 public class LoginResponse {

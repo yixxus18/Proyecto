@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public class Data {
 
     private User user;
-    private Object revisando; // Puedes cambiar esto al tipo correcto si sabes qué es exactamente
+    private Object revisando;
 
     public User getUser() {
         return user;

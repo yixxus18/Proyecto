@@ -1,6 +1,5 @@
 package com.example.proyecto.model;
 
-// Modelo para los datos de inicio de sesión (correo y contraseña)
 public class UserLogin {
     private String email;
     private String password;

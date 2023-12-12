@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.proyecto.model.Data;
-import com.example.proyecto.model.RegisterResponse;
+import com.example.proyecto.response.RegisterResponse;
 import com.example.proyecto.retrofit.ApiService;
 import com.example.proyecto.retrofit.RetrofitRequest;
 import com.google.gson.Gson;
