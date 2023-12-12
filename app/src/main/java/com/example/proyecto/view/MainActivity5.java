@@ -9,6 +9,7 @@ import com.example.proyecto.R;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -65,6 +66,13 @@ public class MainActivity5 extends AppCompatActivity {
     private void observeFeedData() {
         feedViewModel.getFeedList().observe(this, feeds -> {
             feedAdapter.setFeeds(feeds);
+            // Mostrar Toast al actualizar los datos
+            showToast("Datos actualizados");
         });
     }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 }
