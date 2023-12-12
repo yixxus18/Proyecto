@@ -113,7 +113,7 @@ public class FeedViewModel extends ViewModel {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    sendDataToServer(3950);
+                    sendDataToServer(950);
                 }
             };
 
