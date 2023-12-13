@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class MainActivity2 extends AppCompatActivity {
         editTextNombre = findViewById(R.id.editTextNombre);
         buttonRegister = findViewById(R.id.buttonRegister);
 
+
         registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
 
         buttonRegister.setOnClickListener(v -> {
@@ -35,7 +37,14 @@ public class MainActivity2 extends AppCompatActivity {
             String password = editTextPassword.getText().toString().trim();
             String nombre = editTextNombre.getText().toString().trim();
 
+            // Validar la longitud de la contraseña
+            if (password.length() < 8) {
+                Toast.makeText(MainActivity2.this, "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_LONG).show();
+                return; // Salir del método si la contraseña no cumple con la longitud mínima
+            }
+
             registerViewModel.registerUser(email, password, nombre);
+
         });
 
         observeRegistrationStatus();
@@ -69,7 +78,7 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
-    // Método para validar el formato del correo electrónico
+
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

@@ -84,7 +84,7 @@ public class FeedViewModel extends ViewModel {
 
         if (timer == null) {
             timer = new Timer();
-            timer.schedule(timerTask, 0, 9000);
+            timer.schedule(timerTask, 0, 16000);
         }
     }
 
@@ -134,7 +134,6 @@ public class FeedViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<MyResponse> call, Throwable t) {
-                // Manejar fallos
                 Log.e("APIResponse", "Request failed: " + t.getMessage());
             }
         });
