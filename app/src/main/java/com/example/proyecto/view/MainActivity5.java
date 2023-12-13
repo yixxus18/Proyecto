@@ -54,9 +54,13 @@ public class MainActivity5 extends AppCompatActivity {
 
         feedViewModel.getSwitchState().observe(this, switchOn -> {
             switchControl.setChecked(switchOn);
-            feedViewModel.sendDataToServer(switchOn);
+            switchControl.setOnCheckedChangeListener(null);
+            switchControl.setChecked(switchOn);
+            switchControl.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                int valueToSend = isChecked ? 1 : 0;
+                feedViewModel.sendDataToServer(valueToSend);
+            });
         });
-
         switchControl.setOnCheckedChangeListener((buttonView, isChecked) -> {
             feedViewModel.setSwitchState(isChecked);
         });
@@ -66,7 +70,6 @@ public class MainActivity5 extends AppCompatActivity {
     private void observeFeedData() {
         feedViewModel.getFeedList().observe(this, feeds -> {
             feedAdapter.setFeeds(feeds);
-            // Mostrar Toast al actualizar los datos
             showToast("Datos actualizados");
         });
     }

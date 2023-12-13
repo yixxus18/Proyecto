@@ -108,30 +108,7 @@ public class FeedViewModel extends ViewModel {
         switchState.postValue(state);
     }
 
-    public void sendDataToServer(boolean switchOn) {
-        if (switchOn) {
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    sendDataToServer(950);
-                }
-            };
-
-            if (timer == null) {
-                timer = new Timer();
-                timer.schedule(timerTask, 0, 9000);
-            }
-        } else {
-            if (timer != null) {
-                timer.cancel();
-                timer = null;
-            }
-        }
-    }
-
-    private void sendDataToServer(int value) {
-
-
+    public void sendDataToServer(int value) {
         Retrofit retrofit = RetrofitRequest.getRetrofitInstance();
         ApiService apiService = retrofit.create(ApiService.class);
         ControlData controlData = new ControlData(value);
@@ -162,6 +139,12 @@ public class FeedViewModel extends ViewModel {
             }
         });
     }
+
+    public void sendDataToServer(boolean switchOn) {
+        int valueToSend = switchOn ? 1 : 0; // Envía 1 si está encendido, 0 si está apagado
+        sendDataToServer(valueToSend);
+    }
+
 
 }
 
