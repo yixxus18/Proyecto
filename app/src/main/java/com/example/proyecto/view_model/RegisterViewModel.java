@@ -1,6 +1,7 @@
 package com.example.proyecto.view_model;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +11,7 @@ import com.example.proyecto.model.Data;
 import com.example.proyecto.response.RegisterResponse;
 import com.example.proyecto.retrofit.ApiService;
 import com.example.proyecto.retrofit.RetrofitRequest;
+import com.example.proyecto.view.MainActivity2;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -31,6 +33,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void registerUser(String email, String password, String name) {
+
         Data user = new Data();
         user.setEmail(email);
         user.setPassword(password);
@@ -51,18 +54,16 @@ public class RegisterViewModel extends ViewModel {
                             String errorBody = response.errorBody().string();
                             Log.e("RegisterViewModel", "Error en la respuesta de la API: " + errorBody);
 
-                            // Parsear el cuerpo de la respuesta para obtener el mensaje de error
+
+
                             Gson gson = new Gson();
                             RegisterResponse errorResponse = gson.fromJson(errorBody, RegisterResponse.class);
 
-                            // Obtener el mensaje de error desde el objeto errorResponse
+
                             String errorMessage = "";
                             if (errorResponse != null && errorResponse.getData() != null) {
                                 errorMessage = errorResponse.getData().getPassword();
-                                // Aquí obtienes el mensaje de error específico (puedes cambiarlo según la estructura del JSON)
                             }
-
-                            // Mostrar el mensaje de error
                             Log.e("RegisterViewModel", "Error en la respuesta de la API: " + errorMessage);
                         }
                     } catch (IOException e) {
