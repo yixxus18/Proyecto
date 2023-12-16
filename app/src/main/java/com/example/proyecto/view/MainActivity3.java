@@ -40,13 +40,12 @@ public class MainActivity3 extends AppCompatActivity {
             if (!email.isEmpty() && !password.isEmpty()) {
                 loginViewModel.loginUser(email, password, MainActivity3.this);
             } else {
-                // Manejar el caso donde el correo o contraseña están vacíos
+
                 Toast.makeText(MainActivity3.this, "Ingrese correo y contraseña", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // No es necesario llamar a loginUser con los valores guardados aquí,
-        // ya que ahora se llama en el listener del botón de inicio de sesión.
+
     }
 
     private void observeLoginStatus() {
